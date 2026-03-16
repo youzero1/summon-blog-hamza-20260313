@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import PostCard from '@/components/PostCard';
 import Pagination from '@/components/Pagination';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Home | NextBlog',
@@ -53,7 +54,20 @@ export default async function HomePage({
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {data.posts.map((post: any) => (
-              <PostCard key={post.id} post={post} />
+              <div key={post.id} className="flex flex-col">
+                <PostCard post={post} />
+                {/* Comments Section for each post */}
+                <div className="px-6 pb-6">
+                    {/* 
+                      This component renders the comment list and a submission form.
+                      It is client-side rendered to handle user interactions dynamically.
+                    */}
+                    {/* <Comments postId={post.id} /> */}
+                    <Link href={`/posts/${post.slug}`} className="text-blue-600 hover:underline">
+                        View Comments
+                    </Link>
+                </div>
+              </div>
             ))}
           </div>
           {data.totalPages > 1 && (
