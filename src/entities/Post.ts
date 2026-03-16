@@ -1,35 +1,32 @@
-import 'reflect-metadata';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Comment } from './Comment';
 
-@Entity('posts')
+@Entity()
 export class Post {
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: number;
 
-  @Column({ type: 'varchar', length: 255 })
-  title!: string;
+  @Column()
+  title: string;
 
-  @Column({ type: 'varchar', length: 255, unique: true })
-  slug!: string;
+  @Column({ unique: true })
+  slug: string;
 
-  @Column({ type: 'text' })
-  content!: string;
+  @Column('text')
+  content: string;
 
-  @Column({ type: 'varchar', length: 500 })
-  excerpt!: string;
+  @Column()
+  excerpt: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  author!: string;
+  @Column()
+  author: string;
 
-  @CreateDateColumn()
-  createdAt!: Date;
+  @Column({ type: 'datetime' })
+  createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt!: Date;
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
+
+  @OneToMany(() => Comment, comment => comment.post)
+  comments: Comment[];
 }
